@@ -1,6 +1,7 @@
 import React, { useRef, useCallback, useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
+import { useInterval } from "use-interval";
 import type { YouTubePlayer } from "youtube-player/dist/types";
 import styles from "../styles/Home.module.scss";
 import { Player } from "../src/components/Player";
@@ -14,12 +15,22 @@ const parseNumber = (str: string): number => {
   return num;
 };
 
+const formatTime = (seconds: number): string => {
+  const minutes = Math.floor(seconds / 60);
+  const _seconds = seconds - minutes * 60;
+
+  return `${minutes.toString().padStart(2, "0")}:${_seconds
+    .toString()
+    .padStart(2, "0")}`;
+};
+
 const Home: NextPage = () => {
   const a = useRef<YouTubePlayer>(null);
   const b = useRef<YouTubePlayer>(null);
 
   const [offsetSeconds, setOffsetSeconds] = useState("-35");
   const [seekTo, setSeekTo] = useState("60");
+  const [duration, setDuration] = useState<number | null>(null);
 
   const playVideo = useCallback(() => {
     if (a.current && b.current) {
@@ -46,6 +57,21 @@ const Home: NextPage = () => {
     }
   }, [a, b]);
 
+  const updateDuration = useCallback(async () => {
+    if (a.current && b.current) {
+      const ad = await a.current.getDuration();
+      const bd = await b.current.getDuration();
+      setDuration(Math.max(ad, bd));
+    }
+  }, [a, b]);
+
+  // HACK
+  useInterval(() => {
+    if (duration === null) {
+      updateDuration();
+    }
+  }, 1000);
+
   return (
     <div className={styles.container}>
       <Head>
@@ -59,12 +85,15 @@ const Home: NextPage = () => {
           <button onClick={() => pause()}>pause</button>
           <div>
             <input
-              type="number"
+              type="range"
+              min={0}
+              max={duration ?? 0}
               value={seekTo}
               onChange={(e) => {
                 setSeekTo(e.target.value);
               }}
             />
+            {formatTime(parseNumber(seekTo))}
             <button
               onClick={(e) => {
                 e.preventDefault();
@@ -85,8 +114,10 @@ const Home: NextPage = () => {
             />
           </div>
         </div>
+
         <Spacer height={"2rem"} />
-        <div>
+
+        <div className={styles.player}>
           A
           <Player
             controller={a}
@@ -96,7 +127,8 @@ const Home: NextPage = () => {
         </div>
 
         <Spacer height={"2rem"} />
-        <div>
+
+        <div className={styles.player}>
           B
           <Player
             controller={b}

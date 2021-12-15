@@ -16,7 +16,12 @@ const usePlayer = (params: {
     if (player) {
       player.destroy();
     }
-    setPlayer(YTPlayer(params.elmId, { videoId: params.videoId }));
+    setPlayer(
+      YTPlayer(params.elmId, {
+        videoId: params.videoId,
+        width: Math.floor(window.innerWidth * 0.7),
+      })
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.videoId]);
 
