@@ -1,10 +1,9 @@
 {
   "name": "futamado-syncer",
-  "private": true,
+  "license": "MIT",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "build": "next build && next export",
     "lint": "next lint"
   },
   "dependencies": {

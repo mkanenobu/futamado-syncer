@@ -41,7 +41,7 @@ interface PlayerProps {
 export const Player: React.VFC<PlayerProps> = (props) => {
   const [url, setUrl] = useState(props.initialUrl);
 
-  const videoId = useMemo(() => getVideoIdFromUrl(url), [url]);
+  const videoId = useMemo(() => (url ? getVideoIdFromUrl(url) : ""), [url]);
 
   const player = usePlayer({ elmId: props.playerId, videoId });
 
