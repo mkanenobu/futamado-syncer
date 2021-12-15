@@ -28,7 +28,7 @@ const Home: NextPage = () => {
   const a = useRef<YouTubePlayer>(null);
   const b = useRef<YouTubePlayer>(null);
 
-  const [offsetSeconds, setOffsetSeconds] = useState("-35");
+  const [offsetSeconds, setOffsetSeconds] = useState("35");
   const [seekTo, setSeekTo] = useState("60");
   const [duration, setDuration] = useState<number | null>(null);
 
@@ -122,7 +122,7 @@ const Home: NextPage = () => {
           <Player
             controller={a}
             playerId={"player-A"}
-            initialUrl={"https://youtu.be/NC-4W3S-WXo"}
+            initialUrl={"https://youtu.be/svEQsLaq0v8"}
           />
         </div>
 
@@ -133,7 +133,7 @@ const Home: NextPage = () => {
           <Player
             controller={b}
             playerId={"player-B"}
-            initialUrl={"https://youtu.be/svEQsLaq0v8"}
+            initialUrl={"https://youtu.be/NC-4W3S-WXo"}
           />
         </div>
       </main>
