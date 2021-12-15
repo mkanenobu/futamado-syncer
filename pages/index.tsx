@@ -4,6 +4,7 @@ import Head from "next/head";
 import type { YouTubePlayer } from "youtube-player/dist/types";
 import styles from "../styles/Home.module.scss";
 import { Player } from "../src/components/Player";
+import { Spacer } from "../src/components/Spacer";
 
 const parseNumber = (str: string): number => {
   const num = parseInt(str, 10);
@@ -17,7 +18,7 @@ const Home: NextPage = () => {
   const a = useRef<YouTubePlayer>(null);
   const b = useRef<YouTubePlayer>(null);
 
-  const [offsetSeconds, setOffsetSeconds] = useState("35");
+  const [offsetSeconds, setOffsetSeconds] = useState("-35");
   const [seekTo, setSeekTo] = useState("60");
 
   const playVideo = useCallback(() => {
@@ -74,7 +75,7 @@ const Home: NextPage = () => {
             </button>
           </div>
           <div>
-            offset
+            offset:{" "}
             <input
               type="number"
               value={offsetSeconds}
@@ -84,17 +85,25 @@ const Home: NextPage = () => {
             />
           </div>
         </div>
+        <Spacer height={"2rem"} />
+        <div>
+          A
+          <Player
+            controller={a}
+            playerId={"player-A"}
+            initialUrl={"https://youtu.be/NC-4W3S-WXo"}
+          />
+        </div>
 
-        <Player
-          controller={a}
-          playerId={"player-A"}
-          initialUrl={"https://youtu.be/NC-4W3S-WXo"}
-        />
-        <Player
-          controller={b}
-          playerId={"player-B"}
-          initialUrl={"https://youtu.be/svEQsLaq0v8"}
-        />
+        <Spacer height={"2rem"} />
+        <div>
+          B
+          <Player
+            controller={b}
+            playerId={"player-B"}
+            initialUrl={"https://youtu.be/svEQsLaq0v8"}
+          />
+        </div>
       </main>
     </div>
   );
